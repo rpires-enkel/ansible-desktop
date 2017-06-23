@@ -1,0 +1,317 @@
+#
+# sudo passwd
+# su
+# apt install git ansible -y
+# cd
+# git clone https://github.com/rpires-enkel/ansible-desktop
+# ansible-playbook ~/ansible-desktop/playbook.yaml
+#
+---
+- hosts: all
+  remote_user: root
+  vars:
+    dominio: "smiles.com.br"
+  tasks:
+
+  
+########################
+# PPA
+########################
+    - name: PPA - Oracle
+      apt_repository: repo="ppa:webupd8team/java" state=present
+
+    - name: PPA - Configure Grub Customizer
+      apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
+
+    - name: PPA - Configure Notepadqq
+      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
+      
+    - name: Update repositories cache - apt-get update
+      apt:
+        update_cache: yes
+        cache_valid_time: 7200
+
+
+########################
+# FERRAMENTAS UTEIS
+########################
+    - name: Install common packages
+      apt: pkg={{item}} state=latest
+      with_items:
+#        - alacarte
+        - aptitude
+        - axel
+        - bzr
+#        - dia
+#        - dia-gnome
+        - dos2unix
+        - expect
+        - fdupes
+        - gawk
+#        - gimp
+        - git
+        - gksu
+#        - gnome-panel
+        - gpm
+        - grub-customizer
+        - htop
+        - httping
+        - iftop
+        - iotop
+#        - lightdm-gtk-greeter
+#        - lightdm-gtk-greeter-settings
+#        - meld
+        - nautilus-compare
+        - nautilus-image-converter
+        - nautilus-image-manipulator
+        - nautilus-wipe
+#        - ntopng
+        - ntpdate
+        - openssh-server
+        - openvpn
+        - python-pexpect
+        - python-pip
+        - smbclient
+        - synaptic
+        - tmux
+        - trash-cli
+#        - unity-tweak-tool
+        - vim
+        - whois
+########## AD INTEGRATION
+        - krb5-user
+        - samba
+        - sssd
+        - ntp
+
+
+########################
+# SSH Server
+########################
+    - name: SSH Server - Edit sshd_config
+      lineinfile: dest=/etc/ssh/sshd_config
+        regexp='^PermitRootLogin'
+        line='PermitRootLogin yes'
+        state=present
+
+    - name: SSH Server - Restart service
+      service:
+        name: sshd
+        state: restarted
+
+#    - name: SSH Server - Generate Keys
+#      expect:
+#        command: ssh-keygen -t rsa
+#        responses:
+#          'Enter file in which to save the key \(/root/.ssh/id_rsa\)' : ""
+#          'Enter passphrase \(empty for no passphrase\)' : ""
+#          'Enter same passphrase again' : ""
+
+
+########################
+# Oracle
+########################
+#    - name: Oracle - Agree to Oracle license
+#      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+#      
+#    - name: Oracle - Install Java 8
+#      apt: name=oracle-java8-installer force=yes
+      
+
+########################
+# SOAP UI
+########################
+#    - name: Soap UI - Download
+#      get_url:
+#        url: https://b537910400b7ceac4df0-22e92613740a7dd1247910134033c0d1.ssl.cf5.rackcdn.com/soapui/5.3.0/SoapUI-x64-5.3.0.sh
+#        dest: /usr/local
+#        mode: 0755
+#
+#    - name: Soup UI - Install
+#      expect:
+#        command: sh /usr/local/SoapUI-x64-5.3.0.sh
+#        responses:
+#          'OK \[o, Enter\], Cancel \[c\]' : ""
+#          '\[Enter\]' : ""
+#          'Yes \[1\], No \[2\]' : "1"
+#          '\[/root\]' : "/usr/local/SoapUI-5.3.0"
+#          '\[/usr/local/SoapUI-5.3.0\]' : "/usr/local/SoapUI-5.3.0"
+#          '\[/usr/local/SmartBear/SoapUI-5.3.0\]' : "/usr/local/SoapUI-5.3.0"
+#          '\[/opt/SmartBear/SoapUI-5.3.0\]' : "/usr/local/SoapUI-5.3.0"
+#          'Yes \[y, Enter\], No \[n\]' : ""
+#          '\[/usr/local/bin\]' : ""
+
+
+########################
+# TMUX-CSSH
+########################
+#    - name: TMUX-CSSH - Download
+#      git:
+#        repo: 'https://github.com/dennishafemann/tmux-cssh'
+#        dest: /tmp/tmux-cssh
+# 
+#    - name: TMUX-CSSH - Install
+#      copy: src=/tmp/tmux-cssh/tmux-cssh dest=/usr/bin mode=755
+
+
+########################
+# CHROME
+########################
+#    - name: Google Chrome - Download
+#      get_url:
+#        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#        dest: /usr/local
+#    
+#    - name: Google Chrome - Install
+#      apt:
+#        deb: /usr/local/google-chrome-stable_current_amd64.deb
+
+
+########################
+# SLACK
+########################
+#    - name: Slack - Download
+#      get_url:
+#        url: https://downloads.slack-edge.com/linux_releases/slack-desktop-2.5.2-amd64.deb
+#        dest: /usr/local
+#
+#    - name: Slack - Install
+#      apt:
+#        deb: /usr/local/slack-desktop-2.5.2-amd64.deb
+
+
+########################
+# SKYPE
+########################
+#    - name: Skype - Download
+#      get_url:
+#        url: https://go.skype.com/skypeforlinux-64.deb
+#        dest: /usr/local
+#
+#    - name: Skype - Install
+#      apt:
+#        deb: /usr/local/skypeforlinux-64.deb
+
+
+########################
+# ECLIPSE
+########################
+#    - name: Eclipse IDE - Download
+#      get_url:
+#        url: http://eclipse.c3sl.ufpr.br/technology/epp/downloads/release/neon/3/eclipse-jee-neon-3-linux-gtk-x86_64.tar.gz
+#        dest: /usr/local/
+#
+#    - name: Eclipse IDE - Install
+#      unarchive: copy=no src="/usr/local/eclipse-jee-neon-3-linux-gtk-x86_64.tar.gz" dest="/usr/local/"
+
+
+########################
+# PACK DESENVOLVIMENTO
+########################
+#    - name: Install development packages
+#      apt: pkg={{item}} state=latest
+#      with_items:
+#        - git
+#        - git-hub
+#        - filezilla
+#        - ruby
+#NAO PRECISA        - openjdk-8-jdk
+#        - maven
+#        - mysql-server
+#        - mysql-workbench
+#        - notepadqq
+#        - subversion
+#        - subversion-tools
+#        - tomcat8
+
+
+########################
+# DESKTOP
+########################
+#    - name: Desktop - Download Unity Launcher Folders
+#      get_url:
+#        url: http://unity-folders.exceptionfound.com/unity-launcher-folders_1.0.3_all.deb
+#        dest: /usr/local
+#
+#    - name: Desktop - Install Unity Launcher Folders
+#      apt:
+#        deb: /usr/local/unity-launcher-folders_1.0.3_all.deb
+#
+#    - name: Create skel structure
+#      file:
+#        path: /etc/skel/.config/dconf
+#        state: directory
+#        recurse: yes
+#        mode: 0775
+#
+#    - name: Copy file - user
+#      copy:
+#        src: /home/ricardo/Downloads/user
+#        dest: /etc/skel/.config/dconf/
+#        force: yes
+#        mode: 0664
+
+
+########################
+# APT UPGRADE
+########################
+    - name: Upgrade Packages - apt-get upgrade
+      apt: upgrade=yes
+
+    - name: "***** Reboot Required *****"
+      shell: echo 'Reboot Required' 
+
+
+
+
+
+#####################################################################################
+
+#####################################################################################
+
+
+
+
+########################
+# ACTIVE DIRECTORY
+########################
+    - name: Move hosts to /etc/hosts-bkp
+      command: mv /etc/hosts /etc/hosts-bkp
+    - name: Create /etc/hosts
+      lineinfile:
+        dest: /etc/hosts
+        create: yes
+        regexp: '.*'
+        line: "127.0.0.1\tlocalhost\n127.0.0.1\t{{ ansible_hostname }}.{{ dominio }}\t{{ ansible_hostname }}\n127.0.1.1\t{{ ansible_hostname }}\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}"
+        state: present
+
+#    - name: Copy configuration files
+#      copy: src={{ item.src }} dest={{ item.dest }} owner={{ item.owner }} mode={{ item.mode }} force=yes
+#      with_items:
+# Unity - { src: '/root/CONFS/50-unity-greeter.conf', dest: '/usr/share/lightdm/lightdm.conf.d/', owner: 'root', mode: '644' }
+        - { src: '/smiles-desktop-linux/krb5.conf', dest: '/etc/', owner: 'root', mode: '644' }
+        - { src: '/smiles-desktop-linux/ntp.conf', dest: '/etc/', owner: 'root', mode: '644' }
+        - { src: '/smiles-desktop-linux/smb.conf', dest: '/etc/samba/', owner: 'root', mode: '644' }
+        - { src: '/smiles-desktop-linux/sssd.conf', dest: '/etc/sssd/', owner: 'root', mode: '600' }
+        - { src: '/smiles-desktop-linux/common-session', dest: '/etc/pam.d/', owner: 'root',  mode: '644' }
+
+#    - name: Restart Services
+#      service: name={{ item.name }} state={{ item.state }}
+#      with_items:
+#        - { name: 'ntp', state: 'restarted'}
+#        - { name: 'smbd', state: 'restarted'}
+#        - { name: 'nmbd', state: 'restarted'}
+
+#    - name: kinit
+#      expect:
+#        command: kinit Administrator
+#        responses:
+#          Password for Administrator@SMILES.COM.BR: 'senha'
+
+########################
+# REBOOT
+########################
+#    - name: Reboot machine
+#      shell: sleep 2s && reboot
+
+...
