@@ -7,10 +7,21 @@
 # ansible-playbook ~/ansible-desktop/playbook_CALEX.yaml
 #
 ---
-- hosts: all
+- hosts: localhost
   remote_user: root
-  vars:
-    dominio: "calex.local"
+#  vars:
+#    dominio: "calex.local"
+#  vars_prompt:
+#    - name: "dominio"
+#      prompt: "Enter Domain name (lower case)"
+#      private: no
+#    - name: "ad_user"
+#      prompt: "Usuario AD com permissao de ADM"
+#      private: yes
+#    - name: "ad_passwd"
+#      prompt: "password"
+#      private: yes
+  
   tasks:
 
   
