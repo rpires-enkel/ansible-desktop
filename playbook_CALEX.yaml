@@ -8,9 +8,6 @@
 #
 
 
-***   ADICIONAR FERRAMENTA DE BACKUP
-
-
 
 
 ---
@@ -59,6 +56,7 @@
         - aptitude
         - axel
         - bzr
+        - deja-dup
         - dos2unix
         - expect
         - fdupes
@@ -105,41 +103,41 @@
 ########################
 # SSH Server
 ########################
-    - name: SSH Server - Edit sshd_config
-      lineinfile: dest=/etc/ssh/sshd_config
-        regexp='^PermitRootLogin'
-        line='PermitRootLogin yes'
-        state=present
-
-    - name: SSH Server - Restart service
-      service:
-        name: sshd
-        state: restarted
+#    - name: SSH Server - Edit sshd_config
+#      lineinfile: dest=/etc/ssh/sshd_config
+#        regexp='^PermitRootLogin'
+#        line='PermitRootLogin yes'
+#        state=present
+#
+#    - name: SSH Server - Restart service
+#      service:
+#        name: sshd
+#        state: restarted
 
 
         
 ########################
 # Oracle
 ########################
-    - name: Oracle - Agree to Oracle license
-      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
-      
-    - name: Oracle - Install Java 8
-      apt: name=oracle-java8-installer force=yes
+#    - name: Oracle - Agree to Oracle license
+#      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+#      
+#    - name: Oracle - Install Java 8
+#      apt: name=oracle-java8-installer force=yes
       
 
 
 ########################
 # CHROME
 ########################
-    - name: Google Chrome - Download
-      get_url:
-        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        dest: /usr/local
-    
-    - name: Google Chrome - Install
-      apt:
-        deb: /usr/local/google-chrome-stable_current_amd64.deb
+#    - name: Google Chrome - Download
+#      get_url:
+#        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#        dest: /usr/local
+#    
+#    - name: Google Chrome - Install
+#      apt:
+#        deb: /usr/local/google-chrome-stable_current_amd64.deb
 
 
 
