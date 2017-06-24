@@ -151,6 +151,7 @@
 ########################
 # ACTIVE DIRECTORY / SAMBA
 ########################
+    - file: path=/usr/local/tmp state=directory mode=0777 owner=root group=users recurse=yes
 #    - name: Move hosts to /etc/hosts-bkp
 #      command: mv /etc/hosts /etc/hosts-bkp
 #    - name: Create /etc/hosts
