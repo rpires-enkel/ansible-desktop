@@ -1,0 +1,38 @@
+#-------------------------
+# ACTIVE DIRECTORY / SAMBA
+#-------------------------
+    - name: Samba - Desabilitando resolvconf
+      file: path=/etc/init.d/resolvconf mode=0000
+
+    - name: Samba - Parando serviços
+      service: name={{ item.name }} state={{ item.state }}
+      with_items:
+        - { name: 'nmbd', state: 'stopped'}
+        - { name: 'smbd', state: 'stopped'}
+
+    - name: Samba - Removendo configurações antigas
+      file: path=/etc/samba/{{ item }} state=absent recurse=no
+      with_items:
+        - "smb.conf"
+
+    - name: Kerberos - Removendo configurações antigas
+      file: path=/etc//{{ item }} state=absent recurse=no
+      with_items:
+        - "krb5.conf"
+        - "resolv.conf"
+
+    - name: resolv.conf - Criação do arquivo
+      lineinfile:
+        dest: /etc/resolv.conf
+        create: yes
+        regexp: '.*'
+        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
+        state: present
+
+    - name: Samba - Provisioning
+      command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm={{ realm|upper }} --domain={{ dominio|upper }} --adminpass={{ ad_passwd }}
+
+    - name: Kerberos - Link para arquivo de configuração
+      file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
+
+

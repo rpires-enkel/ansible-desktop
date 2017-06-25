@@ -1,5 +1,16 @@
 # desktop
 
+## Executar ##
+sudo passwd
+su
+apt install git ansible -y
+cd
+git clone https://github.com/rpires-enkel/ansible-desktop
+ansible-playbook ~/ansible-desktop/playbook_CALEX.yaml
+
+
+
+## Comandos ##
 Para listar usuários do samba
 pdbedit -L -v
 
