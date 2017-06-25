@@ -14,16 +14,16 @@
   remote_user: root
 #  vars:
 #    dominio: "calex.local"
-#  vars_prompt:
+  vars_prompt:
 #    - name: "dominio"
 #      prompt: "Enter Domain name (lower case)"
 #      private: no
 #    - name: "ad_user"
 #      prompt: "Usuario AD com permissao de ADM"
 #      private: yes
-#    - name: "ad_passwd"
-#      prompt: "password"
-#      private: yes
+    - name: "ad_passwd"
+      prompt: "password"
+      private: yes
   
   tasks:
 
@@ -31,19 +31,19 @@
 ########################
 # PPA
 ########################
-    - name: PPA - Oracle
-      apt_repository: repo="ppa:webupd8team/java" state=present
-
-    - name: PPA - Configure Grub Customizer
-      apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
-
-    - name: PPA - Configure Notepadqq
-      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
-      
-    - name: Update repositories cache - apt-get update
-      apt:
-        update_cache: yes
-        cache_valid_time: 7200
+#    - name: PPA - Oracle
+#      apt_repository: repo="ppa:webupd8team/java" state=present
+#
+#    - name: PPA - Configure Grub Customizer
+#      apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
+#
+#    - name: PPA - Configure Notepadqq
+#      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
+#      
+#    - name: Update repositories cache - apt-get update
+#      apt:
+#        update_cache: yes
+#        cache_valid_time: 7200
 
 
 ########################
@@ -153,28 +153,61 @@
 ########################
 # TeamViewer
 ########################
-    - name: TeamViewer - Download
-      get_url:
-        url: https://download.teamviewer.com/download/teamviewer_i386.deb
-        dest: /usr/local/teamviewer_i386.deb
-    
-    - name: TeamViewer - Install
-      apt:
-        deb: /usr/local/teamviewer_i386.deb
-
+#    - name: TeamViewer - Download
+#      get_url:
+#        url: https://download.teamviewer.com/download/teamviewer_i386.deb
+#        dest: /usr/local/teamviewer_i386.deb
+#    
+#    - name: TeamViewer - Install
+#      apt:
+#        deb: /usr/local/teamviewer_i386.deb
 
 
 ########################
 # APT UPGRADE
 ########################
-    - name: Upgrade Packages - apt-get upgrade
-      apt: upgrade=yes
+#    - name: Upgrade Packages - apt-get upgrade
+#      apt: upgrade=yes
 
 
 
 ########################
 # ACTIVE DIRECTORY / SAMBA
 ########################
+    - name: Samba - Parando serviços
+      service: name={{ item.name }} state={{ item.state }}
+      with_items:
+        - { name: 'nmbd', state: 'stopped'}
+        - { name: 'smbd', state: 'stopped'}
+
+    - name: Samba - Removendo arquivos antigos
+      file: path=/etc/samba/{{ item }} state=absent recurse=no
+      with_items:
+        - "smb.conf"
+
+    - name: Kerberos - Removendo arquivos antigos
+      file: path=/etc//{{ item }} state=absent recurse=no
+      with_items:
+        - "krb5.conf"
+
+    - name: Samba - Provisioning
+      command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass={{ ad_passwd }}
+
+
+# INTERATIVO:
+#Realm [04]:
+# Domain [SAMDOM]:
+# Server Role (dc, member, standalone) [dc]:
+# DNS backend (SAMBA_INTERNAL, BIND9_FLATFILE, BIND9_DLZ, NONE) [SAMBA_INTERNAL]:
+# DNS forwarder IP address (write 'none' to disable forwarding) [127.0.1.1]:
+#Administrator password:
+#Retype password:
+
+# NAO INTERATIVO:
+#samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass=Passw0rd
+
+# ln -sf /var/lib/samba/private/krb5.conf /etc/krb5.conf
+
 #    - file: path=/usr/local/samba_shares/comercial state=directory mode=0770 owner=root group=comercial recurse=yes
 #    - file: path=/usr/local/samba_shares/financeiro state=directory mode=0770 owner=root group=financeiro recurse=yes
 #    - file: path=/usr/local/samba_shares/publico state=directory mode=0777 owner=root group=users recurse=yes
