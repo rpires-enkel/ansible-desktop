@@ -15,9 +15,12 @@
 #  vars:
 #    dominio: "calex.local"
   vars_prompt:
-#    - name: "dominio"
-#      prompt: "Enter Domain name (lower case)"
-#      private: no
+    - name: "dominio"
+      prompt: "Nome do Domínio (Ex. dominio)"
+      private: no
+    - name: "realm"
+      prompt: "Nome do Realm (Ex. dominio.local.br)"
+      private: no
 #    - name: "ad_user"
 #      prompt: "Usuario AD com permissao de ADM"
 #      private: yes
@@ -174,25 +177,32 @@
 ########################
 # ACTIVE DIRECTORY / SAMBA
 ########################
+    - name: Samba - Desabilitando resolvconf
+      file: path=/etc/init.d/resolvconf mode=0000
+
     - name: Samba - Parando serviços
       service: name={{ item.name }} state={{ item.state }}
       with_items:
         - { name: 'nmbd', state: 'stopped'}
         - { name: 'smbd', state: 'stopped'}
 
-    - name: Samba - Removendo arquivos antigos
+    - name: Samba - Removendo configurações
       file: path=/etc/samba/{{ item }} state=absent recurse=no
       with_items:
         - "smb.conf"
 
-    - name: Kerberos - Removendo arquivos antigos
+    - name: Removendo arquivos antigos
       file: path=/etc//{{ item }} state=absent recurse=no
       with_items:
         - "krb5.conf"
+        - "resolv.conf"
 
     - name: Samba - Provisioning
-      command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass={{ ad_passwd }}
+      #command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass={{ ad_passwd }}
+      command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm={{ dominio|upper }} --domain={{ realm }} --adminpass={{ ad_passwd }}
 
+    - name: Kerberos - Link para arquivo de configuração
+      file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
 
 # INTERATIVO:
 #Realm [04]:
@@ -203,10 +213,16 @@
 #Administrator password:
 #Retype password:
 
-# NAO INTERATIVO:
-#samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass=Passw0rd
 
-# ln -sf /var/lib/samba/private/krb5.conf /etc/krb5.conf
+    - name: resolv.conf - Criação do arquivo
+      lineinfile:
+        dest: /etc/resolv.conf
+        create: yes
+        regexp: '.*'
+        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1"
+        state: present
+
+
 
 #    - file: path=/usr/local/samba_shares/comercial state=directory mode=0770 owner=root group=comercial recurse=yes
 #    - file: path=/usr/local/samba_shares/financeiro state=directory mode=0770 owner=root group=financeiro recurse=yes
