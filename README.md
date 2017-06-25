@@ -1,7 +1,7 @@
 # desktop
 
 ## Executar ##
-sudo passwd
+*sudo passwd
 su
 apt install git ansible -y
 cd
