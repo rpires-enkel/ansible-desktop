@@ -9,6 +9,13 @@
       with_items:
         - { name: 'nmbd', state: 'stopped'}
         - { name: 'smbd', state: 'stopped'}
+        - { name: 'dnsmasq', state: 'stopped'}
+
+    - name: DNSMASQ - Removendo pacote
+      apt:
+        name: dnsmasq
+        state: absent
+        purge: yes
 
     - name: Samba - Removendo configurações antigas
       file: path=/etc/samba/{{ item }} state=absent recurse=no
@@ -43,5 +50,17 @@
 
     - name: Kerberos - Link para arquivo de configuração
       file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
+
+
+#TESTES: (tem que dar certo)
+#	host -t SRV _kerberos._udp.{{ dominio }}.{{ realm }}
+#	host -t SRV _ldap._tcp.{{ dominio }}.{{ realm }}
+#	host -t A {{ realm }}
+#	host www.amazon.com
+#	host -t mx amazon.com
+#	kinit administrator@POA.MSDCBRZ.EALL.COM.BR
+
+
+
 
 
