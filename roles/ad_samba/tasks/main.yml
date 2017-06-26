@@ -11,7 +11,6 @@
         - { name: 'smbd', state: 'stopped'}
 
     - name: DNSMASQ - Parando o servico
-      #command: killall dnsmasq
       shell: "if pgrep dnsmasq; then pkill dnsmasq; fi"
 
     - name: DNSMASQ - Removendo pacote
@@ -54,6 +53,13 @@
     - name: Kerberos - Link para arquivo de configuração
       file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
 
+    - name: Samba - Configuracao do DNS Forwarder
+      lineinfile:
+        dest: /etc/samba/smb.conf
+        regexp: '^dns'
+        line: "\tdns forwarder = 8.8.8.8"
+        state: present
+
     - name: Samba - Iniciando
       service: name={{ item.name }} state={{ item.state }}
       with_items:
@@ -64,12 +70,20 @@
 
 
 #TESTES: (tem que dar certo)
-#	host -t SRV _kerberos._udp.{{ dominio }}.{{ realm }}
-#	host -t SRV _ldap._tcp.{{ dominio }}.{{ realm }}
-#	host -t A {{ realm }}
-#	host www.amazon.com
-#	host -t mx amazon.com
-#	kinit administrator@POA.MSDCBRZ.EALL.COM.BR
+# host -t SRV _kerberos._udp.calex.local.br
+# host -t SRV _ldap._tcp.calex.local.br
+# host -t A calex.local.br
+
+# Aqui precisa do DNS Forwarder em smb.conf apontando pra 8.8.8.8:
+# host www.amazon.com
+# host -t mx amazon.com
+#
+# kinit administrator@CALEX.LOCAL.BR
+# klist
+#
+# smbclient -L localhost -UAdministrator
+# smbclient //localhost/netlogon -UAdministrator -c 'ls'
+# net rpc rights list -U administrator
 
 
 

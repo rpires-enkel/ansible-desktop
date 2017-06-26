@@ -16,7 +16,7 @@
       private: yes
 
   roles:
-#    - os_base
+    - os_base
     - ad_samba
   
 ...
