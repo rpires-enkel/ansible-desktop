@@ -17,7 +17,7 @@
 
   roles:
     - os_base
-#    - ad_samba
+    - ad_samba
   
 #    - name: kinit
 #      expect:
