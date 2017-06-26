@@ -5,17 +5,19 @@
   vars_prompt:
     - name: "dominio"
       prompt: "Nome do Domínio (Ex. nome_empresa)"
+      default: calex
       private: no
     - name: "realm"
       prompt: "Nome do Realm (Ex. nome_empresa.local.br)"
+      default: calex.local.br
       private: no
     - name: "ad_passwd"
       prompt: "Admin Password (Tem que ter minusculas, maiusculas e numeros)"
       private: yes
 
   roles:
-#    - os_base
-    - ad_samba
+    - os_base
+#    - ad_samba
   
 #    - name: kinit
 #      expect:

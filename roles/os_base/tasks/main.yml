@@ -1,19 +1,19 @@
 #-----------------------
 # PPA
 #-----------------------
-    - name: PPA - Oracle
-      apt_repository: repo="ppa:webupd8team/java" state=present
-
-    - name: PPA - Configure Grub Customizer
-      apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
-
-    - name: PPA - Configure Notepadqq
-      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
-
-    - name: Update repositories cache - apt-get update
-      apt:
-        update_cache: yes
-        cache_valid_time: 7200
+#    - name: PPA - Oracle
+#      apt_repository: repo="ppa:webupd8team/java" state=present
+#
+#    - name: PPA - Configure Grub Customizer
+#      apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
+#
+#    - name: PPA - Configure Notepadqq
+#      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
+#
+#    - name: Update repositories cache - apt-get update
+#      apt:
+#        update_cache: yes
+#        cache_valid_time: 7200
 
 
 #-----------------------
@@ -63,78 +63,89 @@
         - smbclient
         - sssd
         - ntp
-#        - ldap-utils
+        - ldap-utils
 #        - winbind
 #        - dnsmasq-base PURGE
 
 
 #-----------------------
+# VIM
+#-----------------------
+#    - name: VIM - Cria arquivo de conf
+#      file: path=~/.vimrc state=touch
+#
+#    - name: VIM - Configuracao
+#      lineinfile: dest=~/.vimrc
+#        line='colo delek'
+#        state=present
+
+#-----------------------
 # SSH Server
 #-----------------------
-    - name: SSH Server - Edit sshd_config
-      lineinfile: dest=/etc/ssh/sshd_config
-        regexp='^PermitRootLogin'
-        line='PermitRootLogin yes'
-        state=present
-
-    - name: SSH Server - Restart service
-      service:
-        name: sshd
-        state: restarted
+#    - name: SSH Server - Edit sshd_config
+#      lineinfile: dest=/etc/ssh/sshd_config
+#        regexp='^PermitRootLogin'
+#        line='PermitRootLogin yes'
+#        state=present
+#
+#    - name: SSH Server - Restart service
+#      service:
+#        name: sshd
+#        state: restarted
 
 
 #-----------------------
 # Oracle
 #-----------------------
-    - name: Oracle - Agree to Oracle license
-      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
-
-    - name: Oracle - Install Java 8
-      apt: name=oracle-java8-installer force=yes
+#    - name: Oracle - Agree to Oracle license
+#      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+#
+#    - name: Oracle - Install Java 8
+#      apt: name=oracle-java8-installer force=yes
 
 
 #-----------------------
 # CHROME
 #-----------------------
-    - name: Google Chrome - Download
-      get_url:
-        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        dest: /usr/local
-
-    - name: Google Chrome - Install
-      apt:
-        deb: /usr/local/google-chrome-stable_current_amd64.deb
+#    - name: Google Chrome - Download
+#      get_url:
+#        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#        dest: /usr/local
+#
+#    - name: Google Chrome - Install
+#      apt:
+#        deb: /usr/local/google-chrome-stable_current_amd64.deb
 
 
 #-----------------------
 # Webmin
 #-----------------------
-    - name: Webmin - Download
-      get_url:
-        url: http://prdownloads.sourceforge.net/webadmin/webmin_1.840_all.deb
-        dest: /usr/local
-
-    - name: Webmin - Install
-      apt:
-        deb: /usr/local/webmin_1.840_all.deb
+#    - name: Webmin - Download
+#      get_url:
+#        url: http://prdownloads.sourceforge.net/webadmin/webmin_1.840_all.deb
+#        dest: /usr/local
+#
+#    - name: Webmin - Install
+#      apt:
+#        deb: /usr/local/webmin_1.840_all.deb
 
 
 #-----------------------
 # TeamViewer
 #-----------------------
-    - name: TeamViewer - Download
-      get_url:
-        url: https://download.teamviewer.com/download/teamviewer_i386.deb
-        dest: /usr/local/teamviewer_i386.deb
-
-    - name: TeamViewer - Install
-      apt:
-        deb: /usr/local/teamviewer_i386.deb
+#    - name: TeamViewer - Download
+#      get_url:
+#        url: https://download.teamviewer.com/download/teamviewer_i386.deb
+#        dest: /usr/local/teamviewer_i386.deb
+#
+#    - name: TeamViewer - Install
+#      apt:
+#        deb: /usr/local/teamviewer_i386.deb
 
 
 #-----------------------
 # APT UPGRADE
 #-----------------------
-    - name: Upgrade Packages - apt-get upgrade
-      apt: upgrade=yes
+#    - name: Upgrade Packages - apt-get upgrade
+#      apt: upgrade=yes
 
