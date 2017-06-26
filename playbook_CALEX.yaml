@@ -16,12 +16,7 @@
       private: yes
 
   roles:
-    - os_base
+#    - os_base
     - ad_samba
   
-#    - name: kinit
-#      expect:
-#        command: kinit Administrator
-#        responses:
-#          Password for Administrator@SMILES.COM.BR: 'senha'
 ...

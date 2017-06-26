@@ -9,7 +9,10 @@
       with_items:
         - { name: 'nmbd', state: 'stopped'}
         - { name: 'smbd', state: 'stopped'}
-        - { name: 'dnsmasq', state: 'stopped'}
+
+    - name: DNSMASQ - Parando o servico
+      #command: killall dnsmasq
+      shell: "if pgrep dnsmasq; then pkill dnsmasq; fi"
 
     - name: DNSMASQ - Removendo pacote
       apt:
@@ -50,6 +53,14 @@
 
     - name: Kerberos - Link para arquivo de configuração
       file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
+
+    - name: Samba - Iniciando
+      service: name={{ item.name }} state={{ item.state }}
+      with_items:
+        - { name: 'nmbd', state: 'started'}
+        - { name: 'smbd', state: 'started'}
+        - { name: 'samba-ad-dc', state: 'started'}
+
 
 
 #TESTES: (tem que dar certo)
