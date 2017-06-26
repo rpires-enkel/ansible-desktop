@@ -13,9 +13,15 @@
     - name: DNSMASQ - Parando o servico
       shell: "if pgrep dnsmasq; then pkill dnsmasq; fi"
 
-    - name: DNSMASQ - Removendo pacote
+    - name: dnsmasq - Removendo pacote
       apt:
         name: dnsmasq
+        state: absent
+        purge: yes
+
+    - name: dnsmasq-base - Removendo pacote
+      apt:
+        name: dnsmasq-base
         state: absent
         purge: yes
 
