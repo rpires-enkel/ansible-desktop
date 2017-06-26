@@ -11,7 +11,7 @@
         - { name: 'smbd', state: 'stopped'}
 
     - name: DNSMASQ - Parando o servico
-      shell: "if pgrep dnsmasq; then pkill dnsmasq; fi"
+      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
 
     - name: dnsmasq - Removendo pacote
       apt:

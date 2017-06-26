@@ -147,6 +147,6 @@
 #-----------------------
 # APT UPGRADE
 #-----------------------
-    - name: Upgrade Packages - apt-get upgrade
-      apt: upgrade=yes
+#    - name: Upgrade Packages - apt-get upgrade
+#      apt: upgrade=yes
 
