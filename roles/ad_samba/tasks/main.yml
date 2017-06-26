@@ -56,7 +56,7 @@
     - name: Samba - Configuracao do DNS Forwarder
       lineinfile:
         dest: /etc/samba/smb.conf
-        regexp: '^dns'
+        regexp: '^\tdns'
         line: "\tdns forwarder = 8.8.8.8"
         state: present
 
@@ -69,7 +69,8 @@
 
 
 
-#TESTES: (tem que dar certo)
+# TESTES: (tem que dar certo)
+#
 # host -t SRV _kerberos._udp.calex.local.br
 # host -t SRV _ldap._tcp.calex.local.br
 # host -t A calex.local.br
