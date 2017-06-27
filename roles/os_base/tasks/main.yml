@@ -64,15 +64,15 @@
 #-----------------------
 # PPA
 #-----------------------
-#    - name: PPA - Oracle
-#      apt_repository: repo="ppa:webupd8team/java" state=present
-#
-#    - name: PPA - Configure Grub Customizer
-#      apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
-#
-#    - name: PPA - Configure Notepadqq
-#      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
-#
+    - name: PPA - Oracle
+      apt_repository: repo="ppa:webupd8team/java" state=present
+
+    - name: PPA - Configure Grub Customizer
+      apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
+
+    - name: PPA - Configure Notepadqq
+      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
+
     - name: Update repositories cache - apt-get update
       apt:
         update_cache: yes
@@ -209,6 +209,6 @@
 #-----------------------
 # APT UPGRADE
 #-----------------------
-#    - name: Upgrade Packages - apt-get upgrade
-#      apt: upgrade=yes
+    - name: Upgrade Packages - apt-get upgrade
+      apt: upgrade=yes
 
