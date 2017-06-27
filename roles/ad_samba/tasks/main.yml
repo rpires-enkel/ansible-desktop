@@ -15,28 +15,10 @@
       with_items:
         - "smb.conf"
 
-    - name: Removendo configurações antigas
+    - name: Kerberos - Removendo configurações antigas
       file: path=/etc//{{ item }} state=absent recurse=no
       with_items:
         - "krb5.conf"
-#        - "resolv.conf"
-#        - "hosts"
-
-#    - name: Criando /etc/hosts
-#      lineinfile:
-#        dest: /etc/hosts
-#        create: yes
-#        regexp: '.*'
-#        line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
-#        state: present
-#
-#    - name: resolv.conf - Criação do arquivo
-#      lineinfile:
-#        dest: /etc/resolv.conf
-#        create: yes
-#        regexp: '.*'
-#        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
-#        state: present
 
     - name: Samba - Provisioning
       command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm={{ realm|upper }} --domain={{ dominio|upper }} --adminpass={{ ad_passwd }}
@@ -76,8 +58,6 @@
 # smbclient -L localhost -UAdministrator
 # smbclient //localhost/netlogon -UAdministrator -c 'ls'
 # net rpc rights list -U administrator
-
-
 
 
 

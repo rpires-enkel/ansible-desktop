@@ -43,7 +43,8 @@
         dest: /etc/hosts
         create: yes
         regexp: '.*'
-        line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+        #line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+        line: "127.0.0.1\tlocalhost\n{{ ad_ip }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
         state: present
 
     - name: resolv.conf - Criação do arquivo
