@@ -7,7 +7,7 @@ su
 cd
 apt install git ansible -y
 git clone https://github.com/rpires-enkel/ansible-servidor
-ansible-playbook ~/ansible-desktop/playbook_CALEX.yaml
+ansible-playbook ~/ansible-servidor/playbook_CALEX.yaml
 ```
 
 ## Comandos ##
