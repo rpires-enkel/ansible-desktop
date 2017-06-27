@@ -58,6 +58,10 @@
 # smbclient -L localhost -UAdministrator
 # smbclient //localhost/netlogon -UAdministrator -c 'ls'
 # net rpc rights list -U administrator
+# wbinfo --ping-dc
+#
+
+
 
 
 

@@ -125,7 +125,7 @@
         - krb5-user
         - samba
         - smbclient
-        - sssd
+#        - sssd
         - ntp
         - ldap-utils
         - winbind
