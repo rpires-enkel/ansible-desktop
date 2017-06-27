@@ -4,8 +4,8 @@
 ```
 sudo passwd
 su
-apt install git ansible -y
 cd
+apt install git ansible -y
 git clone https://github.com/rpires-enkel/ansible-servidor
 ansible-playbook ~/ansible-desktop/playbook_CALEX.yaml
 ```
