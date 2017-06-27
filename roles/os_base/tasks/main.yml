@@ -56,8 +56,9 @@
         state: present
 
 # NAO FUNCIONA - nem na mão... ifdown e ifup nao muda as configuracoes da placa
-    - name: Network - Start
-      shell: ifdown {{ interface.stdout }} && ifup {{ interface.stdout }} && sleep 4
+# mas fez mudar rota e default gw o que fez dar merda e parar de navegar na net
+#    - name: Network - Start
+#      shell: ifdown {{ interface.stdout }} && ifup {{ interface.stdout }} && sleep 4
         
 
 
