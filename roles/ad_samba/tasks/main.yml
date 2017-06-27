@@ -60,6 +60,12 @@
 # net rpc rights list -U administrator
 # wbinfo --ping-dc
 #
+# ---------------------------------------
+# Dar privilégio SeDiskOperatorPrivilege:
+# ---------------------------------------
+# net rpc rights grant "CALEX\Domain Admins" SeDiskOperatorPrivilege -U "CALEX\Administrator"
+# net rpc rights list privileges SeDiskOperatorPrivilege -U "CALEX\administrator"
+
 
 
 
