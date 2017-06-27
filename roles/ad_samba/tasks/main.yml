@@ -10,21 +10,6 @@
         - { name: 'nmbd', state: 'stopped'}
         - { name: 'smbd', state: 'stopped'}
 
-    - name: DNSMASQ - Parando o servico
-      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
-
-    - name: dnsmasq - Removendo pacote
-      apt:
-        name: dnsmasq
-        state: absent
-        purge: yes
-
-    - name: dnsmasq-base - Removendo pacote
-      apt:
-        name: dnsmasq-base
-        state: absent
-        purge: yes
-
     - name: Samba - Removendo configurações antigas
       file: path=/etc/samba/{{ item }} state=absent recurse=no
       with_items:
@@ -34,24 +19,24 @@
       file: path=/etc//{{ item }} state=absent recurse=no
       with_items:
         - "krb5.conf"
-        - "resolv.conf"
-        - "hosts"
+#        - "resolv.conf"
+#        - "hosts"
 
-    - name: Criando /etc/hosts
-      lineinfile:
-        dest: /etc/hosts
-        create: yes
-        regexp: '.*'
-        line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
-        state: present
-
-    - name: resolv.conf - Criação do arquivo
-      lineinfile:
-        dest: /etc/resolv.conf
-        create: yes
-        regexp: '.*'
-        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
-        state: present
+#    - name: Criando /etc/hosts
+#      lineinfile:
+#        dest: /etc/hosts
+#        create: yes
+#        regexp: '.*'
+#        line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+#        state: present
+#
+#    - name: resolv.conf - Criação do arquivo
+#      lineinfile:
+#        dest: /etc/resolv.conf
+#        create: yes
+#        regexp: '.*'
+#        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
+#        state: present
 
     - name: Samba - Provisioning
       command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm={{ realm|upper }} --domain={{ dominio|upper }} --adminpass={{ ad_passwd }}
