@@ -27,7 +27,7 @@
 
   
   roles:
-    - os_base
-    - ad_samba
-  
+#    - os_base
+#    - ad_samba
+    - dhcp
 ...

@@ -1,0 +1,51 @@
+#-------------------------
+# DHCP
+#-------------------------
+    - name: DHCP Server - Instalacao
+      apt: pkg={{item}} state=latest
+      with_items:
+        - isc-dhcp-server
+
+#    - name: DHCP Server - configuracao Manual
+#      lineinfile:
+#        dest: /etc/dhcp/dhcpd.conf
+#        line: "{{ item.line }}"
+#      with_items:
+#        - { line: 'default-lease-time 600;' }
+#        - { line: 'max-lease-time 7200;' }
+#        - { line: 'option subnet-mask 255.255.255.0;' }
+#        - { line: '' }
+#        - { line: '' }
+#        - { line: 'auto {{ interface.stdout }}' }
+#        - { line: 'iface {{ interface.stdout }} inet static' }
+#        - { line: 'address {{ ad_ip }} ' }
+#        - { line: 'netmask {{ ad_mask }} ' }
+#        - { line: 'gateway {{ ad_gw }} ' }
+
+#    - name: DHCP Server - Iniciando serviços
+#      service: name={{ item.name }} state={{ item.state }}
+#      with_items:
+#        - { name: 'isc-dhcp-server', state: 'started'}
+
+
+
+#    - name: Samba - Removendo configurações antigas
+#      file: path=/etc/samba/{{ item }} state=absent recurse=no
+#      with_items:
+#        - "smb.conf"
+#
+#    - name: Kerberos - Link para arquivo de configuração
+#      file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
+#
+#    - name: Samba - Configuracao do DNS Forwarder
+#      lineinfile:
+#        dest: /etc/samba/smb.conf
+#        regexp: '^\tdns'
+#        line: "\tdns forwarder = 8.8.8.8"
+#        state: present
+
+
+
+
+
+
