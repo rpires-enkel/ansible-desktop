@@ -24,15 +24,18 @@
     - name: "ad_gw"
       prompt: "Gateway"
       default: 192.168.2.200
-    - name: "dhcp_range_ini"
-      prompt: "DHCP - Range (ip inicial)"
-      default: 192.168.2.50
-    - name: "dhcp_range_end"
-      prompt: "DHCP - Range (ip final)"
-      default: 192.168.2.250
+
+######## DHCP Server ###########
+#    - name: "dhcp_range_ini"
+#      prompt: "DHCP - Range (ip inicial)"
+#      default: 192.168.2.50
+#    - name: "dhcp_range_end"
+#      prompt: "DHCP - Range (ip final)"
+#      default: 192.168.2.250
 
   roles:
-#    - os_base
-#    - ad_samba
-    - dhcp
+    - os_base
+    - ad_samba
+#    - dhcp
+#    - proxy
 ...
