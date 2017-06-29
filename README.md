@@ -29,3 +29,13 @@ net use * /del
 ```
 chgrp -R comercial /usr/local/comercial
 chmod 2775 /usr/local/comercial
+
+## Windows 2012 Server ##
+```
+ServerManager
+	Add roles and features -> Next -> Role-Based (Next) -> Selecionar a própria máquina (Next)
+		Active Directory Domain Services (Next) -> Next -> Next -> Install
+		*IMPORTANTE - não promover o servidor para domain controller. Simplesmente clicar em "Close"
+			Adicionar a máquina no DOMAIN
+				dsa
+```
