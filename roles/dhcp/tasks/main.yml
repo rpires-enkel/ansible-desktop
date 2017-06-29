@@ -6,46 +6,44 @@
       with_items:
         - isc-dhcp-server
 
-#    - name: DHCP Server - configuracao Manual
-#      lineinfile:
-#        dest: /etc/dhcp/dhcpd.conf
-#        line: "{{ item.line }}"
-#      with_items:
-#        - { line: 'default-lease-time 600;' }
-#        - { line: 'max-lease-time 7200;' }
-#        - { line: 'option subnet-mask 255.255.255.0;' }
-#        - { line: '' }
-#        - { line: '' }
-#        - { line: 'auto {{ interface.stdout }}' }
-#        - { line: 'iface {{ interface.stdout }} inet static' }
-#        - { line: 'address {{ ad_ip }} ' }
-#        - { line: 'netmask {{ ad_mask }} ' }
-#        - { line: 'gateway {{ ad_gw }} ' }
+    - name: DHCP Server - Removendo configurações antigas
+      file: path=/etc/dhcp/{{ item }} state=absent recurse=no
+      with_items:
+        - "dhcpd.conf"
 
-#    - name: DHCP Server - Iniciando serviços
-#      service: name={{ item.name }} state={{ item.state }}
-#      with_items:
-#        - { name: 'isc-dhcp-server', state: 'started'}
+    - name: DHCP Server - configuracao Manual
+      lineinfile:
+        dest: /etc/dhcp/dhcpd.conf
+        create: yes
+        line: "{{ item.line }}"
+      with_items:
+        - { line: 'log-facility local7;' }
+        - { line: 'ddns-updates on;' }
+        - { line: 'default-lease-time 600;' }
+        - { line: 'max-lease-time 7200;' }
+        - { line: 'option domain-name "{{ realm }}";' }
+        - { line: 'option domain-name-servers {{ ad_ip }}, 8.8.8.8;' }
+        - { line: 'option ntp-servers {{ ad_ip }};' }
+        - { line: 'subnet {{ ansible_default_ipv4["network"] }} netmask {{ ad_mask }} { ' }
+        - { line: '   range {{ dhcp_range_ini }} {{  dhcp_range_end }};' }
+        - { line: '   option routers {{ ad_gw }};' }
+        - { line: '}' }
 
+    - name: Network - identificacao das interfaces
+      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
+      register: interface
 
+    - name: DHCP Server - configuracao da Interface
+      lineinfile:
+        dest: /etc/default/isc-dhcp-server
+        regexp: '^INTERFACES'
+        line: 'INTERFACES="{{ interface.stdout }}"'
+        state: present
 
-#    - name: Samba - Removendo configurações antigas
-#      file: path=/etc/samba/{{ item }} state=absent recurse=no
-#      with_items:
-#        - "smb.conf"
-#
-#    - name: Kerberos - Link para arquivo de configuração
-#      file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
-#
-#    - name: Samba - Configuracao do DNS Forwarder
-#      lineinfile:
-#        dest: /etc/samba/smb.conf
-#        regexp: '^\tdns'
-#        line: "\tdns forwarder = 8.8.8.8"
-#        state: present
-
-
-
+    - name: DHCP Server - Iniciando serviços
+      service: name={{ item.name }} state={{ item.state }}
+      with_items:
+        - { name: 'isc-dhcp-server', state: 'started'}
 
 
 
