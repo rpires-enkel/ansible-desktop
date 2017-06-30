@@ -39,3 +39,26 @@ ServerManager
 			Adicionar a máquina no DOMAIN
 				dsa
 ```
+
+## Testes ##
+Todos os testes devem funcionar:
+```
+host -t SRV _kerberos._udp.calex.local.br
+host -t SRV _ldap._tcp.calex.local.br
+host -t A calex.local.br
+
+# Aqui precisa do DNS Forwarder em smb.conf apontando pra 8.8.8.8:
+host www.amazon.com
+host -t mx amazon.com
+
+kinit administrator@CALEX.LOCAL.BR
+klist
+
+smbclient -L localhost -UAdministrator
+smbclient //localhost/netlogon -UAdministrator -c 'ls'
+net rpc rights list -U administrator
+wbinfo --ping-dc
+getent passwd Administrator
+
+```
+
