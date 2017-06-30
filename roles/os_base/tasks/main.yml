@@ -1,65 +1,60 @@
 #-----------------------
 # Network
 #-----------------------
-    - name: DNSMASQ - Parando o servico
-      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
+#    - name: DNSMASQ - Parando o servico
+#      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
+#
+#    - name: dnsmasq - Removendo pacote
+#      apt:
+#        name: dnsmasq
+#        state: absent
+#        purge: yes
+#
+#    - name: dnsmasq-base - Removendo pacote
+#      apt:
+#        name: dnsmasq-base
+#        state: absent
+#        purge: yes
+#
+#    - name: Network - identificacao das interfaces
+#      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
+#      register: interface
+#
+#    - name: Network - configuracao Manual
+#      lineinfile:
+#        dest: /etc/network/interfaces
+#        line: "{{ item.line }}"
+#      with_items:
+#        - { line: '' }
+#        - { line: 'auto {{ interface.stdout }}' }
+#        - { line: 'iface {{ interface.stdout }} inet static' }
+#        - { line: 'address {{ ad_ip }} ' }
+#        - { line: 'netmask {{ ad_mask }} ' }
+#        - { line: 'gateway {{ ad_gw }} ' }
+#
+#    - name: Network - Removendo configurações antigas
+#      file: path=/etc//{{ item }} state=absent recurse=no
+#      with_items:
+#        - "resolv.conf"
+#        - "hosts"
+#
+#    - name: Criando /etc/hosts
+#      lineinfile:
+#        dest: /etc/hosts
+#        create: yes
+#        regexp: '.*'
+#        #line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+#        line: "127.0.0.1\tlocalhost\n{{ ad_ip }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+#        state: present
+#
+#    - name: resolv.conf - Criação do arquivo
+#      lineinfile:
+#        dest: /etc/resolv.conf
+#        create: yes
+#        regexp: '.*'
+#        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
+#        state: present
 
-    - name: dnsmasq - Removendo pacote
-      apt:
-        name: dnsmasq
-        state: absent
-        purge: yes
-
-    - name: dnsmasq-base - Removendo pacote
-      apt:
-        name: dnsmasq-base
-        state: absent
-        purge: yes
-
-    - name: Network - identificacao das interfaces
-      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
-      register: interface
-
-    - name: Network - configuracao Manual
-      lineinfile:
-        dest: /etc/network/interfaces
-        line: "{{ item.line }}"
-      with_items:
-        - { line: '' }
-        - { line: 'auto {{ interface.stdout }}' }
-        - { line: 'iface {{ interface.stdout }} inet static' }
-        - { line: 'address {{ ad_ip }} ' }
-        - { line: 'netmask {{ ad_mask }} ' }
-        - { line: 'gateway {{ ad_gw }} ' }
-
-    - name: Network - Removendo configurações antigas
-      file: path=/etc//{{ item }} state=absent recurse=no
-      with_items:
-        - "resolv.conf"
-        - "hosts"
-
-    - name: Criando /etc/hosts
-      lineinfile:
-        dest: /etc/hosts
-        create: yes
-        regexp: '.*'
-        #line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
-        line: "127.0.0.1\tlocalhost\n{{ ad_ip }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
-        state: present
-
-    - name: resolv.conf - Criação do arquivo
-      lineinfile:
-        dest: /etc/resolv.conf
-        create: yes
-        regexp: '.*'
-        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
-        state: present
-
-# NAO FUNCIONA - nem na mão... ifdown e ifup nao muda as configuracoes da placa
-# mas fez mudar rota e default gw o que fez dar merda e parar de navegar na net
-#    - name: Network - Start
-#      shell: ifdown {{ interface.stdout }} && ifup {{ interface.stdout }} && sleep 4
-        
 
 
 #-----------------------
@@ -68,11 +63,14 @@
     - name: PPA - Oracle
       apt_repository: repo="ppa:webupd8team/java" state=present
 
-    - name: PPA - Configure Grub Customizer
+    - name: PPA - Grub Customizer
       apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
 
-    - name: PPA - Configure Notepadqq
+    - name: PPA - Notepadqq
       apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
+
+    - name: PPA - UNetbooting
+      apt_repository: repo="ppa:gezakovacs/ppa" state=present
 
     - name: Update repositories cache - apt-get update
       apt:
@@ -119,6 +117,7 @@
         - synaptic
         - tmux
         - trash-cli
+        - unetbootin
         - vim
         - whois
 ########## AD / SAMBA
@@ -135,76 +134,76 @@
 #-----------------------
 # VIM
 #-----------------------
-    - name: VIM - Cria arquivo de conf
-      file: path=~/.vimrc state=touch
-
-    - name: VIM - Configuracao
-      lineinfile: dest=~/.vimrc
-        line='colo delek'
-        state=present
+#    - name: VIM - Cria arquivo de conf
+#      file: path=~/.vimrc state=touch
+#
+#    - name: VIM - Configuracao
+#      lineinfile: dest=~/.vimrc
+#        line='colo delek'
+#        state=present
 
 #-----------------------
 # SSH Server
 #-----------------------
-    - name: SSH Server - Edit sshd_config
-      lineinfile: dest=/etc/ssh/sshd_config
-        regexp='^PermitRootLogin'
-        line='PermitRootLogin yes'
-        state=present
-
-    - name: SSH Server - Restart service
-      service:
-        name: sshd
-        state: restarted
+#    - name: SSH Server - Edit sshd_config
+#      lineinfile: dest=/etc/ssh/sshd_config
+#        regexp='^PermitRootLogin'
+#        line='PermitRootLogin yes'
+#        state=present
+#
+#    - name: SSH Server - Restart service
+#      service:
+#        name: sshd
+#        state: restarted
 
 
 #-----------------------
 # Oracle
 #-----------------------
-    - name: Oracle - Agree to Oracle license
-      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
-
-    - name: Oracle - Install Java 8
-      apt: name=oracle-java8-installer force=yes
+#    - name: Oracle - Agree to Oracle license
+#      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+#
+#    - name: Oracle - Install Java 8
+#      apt: name=oracle-java8-installer force=yes
 
 
 #-----------------------
 # CHROME
 #-----------------------
-    - name: Google Chrome - Download
-      get_url:
-        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        dest: /usr/local
-
-    - name: Google Chrome - Install
-      apt:
-        deb: /usr/local/google-chrome-stable_current_amd64.deb
+#    - name: Google Chrome - Download
+#      get_url:
+#        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#        dest: /usr/local
+#
+#    - name: Google Chrome - Install
+#      apt:
+#        deb: /usr/local/google-chrome-stable_current_amd64.deb
 
 
 #-----------------------
 # Webmin
 #-----------------------
-    - name: Webmin - Download
-      get_url:
-        url: http://prdownloads.sourceforge.net/webadmin/webmin_1.840_all.deb
-        dest: /usr/local
-
-    - name: Webmin - Install
-      apt:
-        deb: /usr/local/webmin_1.840_all.deb
+#    - name: Webmin - Download
+#      get_url:
+#        url: http://prdownloads.sourceforge.net/webadmin/webmin_1.840_all.deb
+#        dest: /usr/local
+#
+#    - name: Webmin - Install
+#      apt:
+#        deb: /usr/local/webmin_1.840_all.deb
 
 
 #-----------------------
 # TeamViewer
 #-----------------------
-    - name: TeamViewer - Download
-      get_url:
-        url: https://download.teamviewer.com/download/teamviewer_i386.deb
-        dest: /usr/local/teamviewer_i386.deb
-
-    - name: TeamViewer - Install
-      apt:
-        deb: /usr/local/teamviewer_i386.deb
+#    - name: TeamViewer - Download
+#      get_url:
+#        url: https://download.teamviewer.com/download/teamviewer_i386.deb
+#        dest: /usr/local/teamviewer_i386.deb
+#
+#    - name: TeamViewer - Install
+#      apt:
+#        deb: /usr/local/teamviewer_i386.deb
 
 
 #-----------------------
