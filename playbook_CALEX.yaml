@@ -18,12 +18,15 @@
     - name: "ad_ip"
       prompt: "IP para o servidor AD"
       default: 192.168.2.2
+      private: no
     - name: "ad_mask"
       prompt: "MASK"
       default: 255.255.255.0
+      private: no
     - name: "ad_gw"
       prompt: "Gateway"
       default: 192.168.2.200
+      private: no
 
 ######## DHCP Server ###########
 #    - name: "dhcp_range_ini"
