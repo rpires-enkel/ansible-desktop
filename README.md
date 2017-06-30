@@ -47,7 +47,7 @@ host -t SRV _kerberos._udp.calex.local.br
 host -t SRV _ldap._tcp.calex.local.br
 host -t A calex.local.br
 
-# Aqui precisa do DNS Forwarder em smb.conf apontando pra 8.8.8.8:
+# DNS Forwarder em smb.conf apontando pra 8.8.8.8 (ou para quem resolve nomes externos):
 host www.amazon.com
 host -t mx amazon.com
 
