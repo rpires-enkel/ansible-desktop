@@ -134,37 +134,37 @@
 #-----------------------
 # VIM
 #-----------------------
-#    - name: VIM - Cria arquivo de conf
-#      file: path=~/.vimrc state=touch
-#
-#    - name: VIM - Configuracao
-#      lineinfile: dest=~/.vimrc
-#        line='colo delek'
-#        state=present
+    - name: VIM - Cria arquivo de conf
+      file: path=~/.vimrc state=touch
+
+    - name: VIM - Configuracao
+      lineinfile: dest=~/.vimrc
+        line='colo delek'
+        state=present
 
 #-----------------------
 # SSH Server
 #-----------------------
-#    - name: SSH Server - Edit sshd_config
-#      lineinfile: dest=/etc/ssh/sshd_config
-#        regexp='^PermitRootLogin'
-#        line='PermitRootLogin yes'
-#        state=present
-#
-#    - name: SSH Server - Restart service
-#      service:
-#        name: sshd
-#        state: restarted
+    - name: SSH Server - Edit sshd_config
+      lineinfile: dest=/etc/ssh/sshd_config
+        regexp='^PermitRootLogin'
+        line='PermitRootLogin yes'
+        state=present
+
+    - name: SSH Server - Restart service
+      service:
+        name: sshd
+        state: restarted
 
 
 #-----------------------
 # Oracle
 #-----------------------
-#    - name: Oracle - Agree to Oracle license
-#      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
-#
-#    - name: Oracle - Install Java 8
-#      apt: name=oracle-java8-installer force=yes
+    - name: Oracle - Agree to Oracle license
+      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+
+    - name: Oracle - Install Java 8
+      apt: name=oracle-java8-installer force=yes
 
 
 #-----------------------

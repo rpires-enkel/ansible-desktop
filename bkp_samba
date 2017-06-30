@@ -1,0 +1,4 @@
+#!/bin/bash
+
+tar -zcf smb_bkp_etc.tar.gz /etc/samba
+
