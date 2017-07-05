@@ -1,0 +1,20 @@
+#-----------------------
+# FIREWALL
+#-----------------------
+    - name: Update repositories cache - apt-get update
+      apt:
+        update_cache: yes
+        cache_valid_time: 7200
+
+    - name: Install common packages
+      apt: pkg={{item}} state=latest
+      with_items:
+        - fwbuilder
+
+
+#-----------------------
+# APT UPGRADE
+#-----------------------
+    - name: Upgrade Packages - apt-get upgrade
+      apt: upgrade=yes
+

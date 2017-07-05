@@ -1,21 +1,21 @@
 #-----------------------
 # Network
 #-----------------------
-#    - name: DNSMASQ - Parando o servico
-#      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
-#
-#    - name: dnsmasq - Removendo pacote
-#      apt:
-#        name: dnsmasq
-#        state: absent
-#        purge: yes
-#
-#    - name: dnsmasq-base - Removendo pacote
-#      apt:
-#        name: dnsmasq-base
-#        state: absent
-#        purge: yes
-#
+    - name: DNSMASQ - Parando o servico
+      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
+
+    - name: dnsmasq - Removendo pacote
+      apt:
+        name: dnsmasq
+        state: absent
+        purge: yes
+
+    - name: dnsmasq-base - Removendo pacote
+      apt:
+        name: dnsmasq-base
+        state: absent
+        purge: yes
+
 #    - name: Network - identificacao das interfaces
 #      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
 #      register: interface
@@ -66,9 +66,6 @@
     - name: PPA - Grub Customizer
       apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
 
-    - name: PPA - Notepadqq
-      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
-
     - name: PPA - UNetbooting
       apt_repository: repo="ppa:gezakovacs/ppa" state=present
 
@@ -92,6 +89,7 @@
         - expect
         - fdupes
         - filezilla
+        - fwbuilder
         - gawk
         - gksu
         - gpm
@@ -106,7 +104,6 @@
         - nautilus-image-converter
         - nautilus-image-manipulator
         - nautilus-wipe
-        - notepadqq
         - ntopng
         - ntpdate
         - openssh-server
@@ -124,7 +121,6 @@
         - krb5-user
         - samba
         - smbclient
-#        - sssd
         - ntp
         - ldap-utils
         - winbind
@@ -168,42 +164,16 @@
 
 
 #-----------------------
-# CHROME
-#-----------------------
-#    - name: Google Chrome - Download
-#      get_url:
-#        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#        dest: /usr/local
-#
-#    - name: Google Chrome - Install
-#      apt:
-#        deb: /usr/local/google-chrome-stable_current_amd64.deb
-
-
-#-----------------------
-# Webmin
-#-----------------------
-#    - name: Webmin - Download
-#      get_url:
-#        url: http://prdownloads.sourceforge.net/webadmin/webmin_1.840_all.deb
-#        dest: /usr/local
-#
-#    - name: Webmin - Install
-#      apt:
-#        deb: /usr/local/webmin_1.840_all.deb
-
-
-#-----------------------
 # TeamViewer
 #-----------------------
-#    - name: TeamViewer - Download
-#      get_url:
-#        url: https://download.teamviewer.com/download/teamviewer_i386.deb
-#        dest: /usr/local/teamviewer_i386.deb
-#
-#    - name: TeamViewer - Install
-#      apt:
-#        deb: /usr/local/teamviewer_i386.deb
+    - name: TeamViewer - Download
+      get_url:
+        url: https://download.teamviewer.com/download/teamviewer_i386.deb
+        dest: /usr/local/teamviewer_i386.deb
+
+    - name: TeamViewer - Install
+      apt:
+        deb: /usr/local/teamviewer_i386.deb
 
 
 #-----------------------
