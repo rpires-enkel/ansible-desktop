@@ -26,7 +26,7 @@
     - name: "ad_gw"
       prompt: "Gateway"
       private: no
-      default: 192.168.0.254
+      default: 192.168.0.1
 
 ######## DHCP Server ###########
     - name: "dhcp_range_ini"
@@ -37,10 +37,6 @@
       prompt: "DHCP - Range (ip final)"
       private: no
       default: 192.168.0.250
-    - name: "dhcp_range_end"
-      prompt: "DHCP - Range (ip final)"
-      private: no
-      default: 192.168.2.250
 
 
   roles:
