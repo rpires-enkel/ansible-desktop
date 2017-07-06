@@ -45,7 +45,7 @@
 
   roles:
     - os_base
-#    - ad_samba
+    - ad_samba
     - dhcp
 #    - proxy
 #    - firewall

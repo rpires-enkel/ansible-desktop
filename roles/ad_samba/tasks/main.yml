@@ -51,6 +51,8 @@
 
 
 
+########### SAMBA AD
+#
 # TESTES: (tem que dar certo)
 #
 # host -t SRV _kerberos._udp.calex.local.br
