@@ -15,23 +15,32 @@
       with_items:
         - "smb.conf"
 
-    - name: Kerberos - Removendo configurações antigas
-      file: path=/etc//{{ item }} state=absent recurse=no
+############# SAMBA STANDALONE
+   - name: Samba - Copia de arquivos de configuração
+      copy: src={{ item.src }} dest={{ item.dest }} owner={{ item.owner }} mode={{ item.mode }} force=yes
       with_items:
-        - "krb5.conf"
+        - { src: '~/ansible-servidor/Calex/smb.conf', dest: '/etc/samba/', owner: 'root', group: 'root', mode: '644' }
 
-    - name: Samba - Provisioning
-      command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm={{ realm|upper }} --domain={{ dominio|upper }} --adminpass={{ ad_passwd }}
 
-    - name: Kerberos - Link para arquivo de configuração
-      file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
-
-    - name: Samba - Configuracao do DNS Forwarder
-      lineinfile:
-        dest: /etc/samba/smb.conf
-        regexp: '^\tdns'
-        line: "\tdns forwarder = 8.8.8.8"
-        state: present
+############# SAMBA AD
+#    - name: Kerberos - Removendo configurações antigas
+#      file: path=/etc//{{ item }} state=absent recurse=no
+#      with_items:
+#        - "krb5.conf"
+#
+#    - name: Samba - Provisioning
+#      command: samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm={{ realm|upper }} --domain={{ dominio|upper }} --adminpass={{ ad_passwd }}
+#
+#    - name: Kerberos - Link para arquivo de configuração
+#      file: src=/var/lib/samba/private/krb5.conf dest=/etc/krb5.conf state=link
+#
+#    - name: Samba - Configuracao do DNS Forwarder
+#      lineinfile:
+#        dest: /etc/samba/smb.conf
+#        regexp: '^\tdns'
+#        line: "\tdns forwarder = 8.8.8.8"
+#        state: present
+################################################################
 
     - name: Samba - Iniciando
       service: name={{ item.name }} state={{ item.state }}

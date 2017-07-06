@@ -11,23 +11,10 @@
       with_items:
         - "dhcpd.conf"
 
-    - name: DHCP Server - configuracao Manual
-      lineinfile:
-        dest: /etc/dhcp/dhcpd.conf
-        create: yes
-        line: "{{ item.line }}"
+    - name: DHCP Server - Copia de arquivos de configuração
+      copy: src={{ item.src }} dest={{ item.dest }} owner={{ item.owner }} mode={{ item.mode }} force=yes
       with_items:
-        - { line: 'log-facility local7;' }
-        - { line: 'ddns-updates on;' }
-        - { line: 'default-lease-time 600;' }
-        - { line: 'max-lease-time 7200;' }
-        - { line: 'option domain-name "{{ realm }}";' }
-        - { line: 'option domain-name-servers {{ ad_ip }}, 8.8.8.8;' }
-        - { line: 'option ntp-servers {{ ad_ip }};' }
-        - { line: 'subnet {{ ansible_default_ipv4["network"] }} netmask {{ ad_mask }} { ' }
-        - { line: '   range {{ dhcp_range_ini }} {{  dhcp_range_end }};' }
-        - { line: '   option routers {{ ad_gw }};' }
-        - { line: '}' }
+        - { src: '~/ansible-servidor/Calex/dhcpd.conf', dest: '/etc/dhcp/', owner: 'root', group: 'root', mode: '644' }
 
     - name: Network - identificacao das interfaces
       shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
