@@ -21,8 +21,8 @@
       private: no
     - name: "ad_mask"
       prompt: "MASK"
-      default: 255.255.255.0
       private: no
+      default: 255.255.255.0
     - name: "ad_gw"
       prompt: "Gateway"
       default: 192.168.0.254
@@ -35,10 +35,17 @@
     - name: "dhcp_range_end"
       prompt: "DHCP - Range (ip final)"
       default: 192.168.0.250
+      private: no
+    - name: "dhcp_range_end"
+      prompt: "DHCP - Range (ip final)"
+      private: no
+      default: 192.168.2.250
+
 
   roles:
     - os_base
 #    - ad_samba
     - dhcp
 #    - proxy
+#    - firewall
 ...
