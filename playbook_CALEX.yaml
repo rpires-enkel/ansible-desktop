@@ -17,7 +17,7 @@
       private: yes
     - name: "ad_ip"
       prompt: "IP para o servidor AD"
-      default: 192.168.2.2
+      default: 192.168.0.254
       private: no
     - name: "ad_mask"
       prompt: "MASK"
@@ -25,20 +25,20 @@
       private: no
     - name: "ad_gw"
       prompt: "Gateway"
-      default: 192.168.2.200
+      default: 192.168.0.254
       private: no
 
 ######## DHCP Server ###########
-#    - name: "dhcp_range_ini"
-#      prompt: "DHCP - Range (ip inicial)"
-#      default: 192.168.2.50
-#    - name: "dhcp_range_end"
-#      prompt: "DHCP - Range (ip final)"
-#      default: 192.168.2.250
+    - name: "dhcp_range_ini"
+      prompt: "DHCP - Range (ip inicial)"
+      default: 192.168.0.50
+    - name: "dhcp_range_end"
+      prompt: "DHCP - Range (ip final)"
+      default: 192.168.0.250
 
   roles:
     - os_base
 #    - ad_samba
-#    - dhcp
+    - dhcp
 #    - proxy
 ...

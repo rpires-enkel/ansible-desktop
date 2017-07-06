@@ -1,59 +1,59 @@
 #-----------------------
 # Network
 #-----------------------
-#    - name: DNSMASQ - Parando o servico
-#      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
-#
-#    - name: dnsmasq - Removendo pacote
-#      apt:
-#        name: dnsmasq
-#        state: absent
-#        purge: yes
-#
-#    - name: dnsmasq-base - Removendo pacote
-#      apt:
-#        name: dnsmasq-base
-#        state: absent
-#        purge: yes
-#
-#    - name: Network - identificacao das interfaces
-#      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
-#      register: interface
-#
-#    - name: Network - configuracao Manual
-#      lineinfile:
-#        dest: /etc/network/interfaces
-#        line: "{{ item.line }}"
-#      with_items:
-#        - { line: '' }
-#        - { line: 'auto {{ interface.stdout }}' }
-#        - { line: 'iface {{ interface.stdout }} inet static' }
-#        - { line: 'address {{ ad_ip }} ' }
-#        - { line: 'netmask {{ ad_mask }} ' }
-#        - { line: 'gateway {{ ad_gw }} ' }
-#
-#    - name: Network - Removendo configurações antigas
-#      file: path=/etc//{{ item }} state=absent recurse=no
-#      with_items:
-#        - "resolv.conf"
-#        - "hosts"
-#
-#    - name: Criando /etc/hosts
-#      lineinfile:
-#        dest: /etc/hosts
-#        create: yes
-#        regexp: '.*'
-#        #line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
-#        line: "127.0.0.1\tlocalhost\n{{ ad_ip }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
-#        state: present
-#
-#    - name: resolv.conf - Criação do arquivo
-#      lineinfile:
-#        dest: /etc/resolv.conf
-#        create: yes
-#        regexp: '.*'
-#        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
-#        state: present
+    - name: DNSMASQ - Parando o servico
+      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
+
+    - name: dnsmasq - Removendo pacote
+      apt:
+        name: dnsmasq
+        state: absent
+        purge: yes
+
+    - name: dnsmasq-base - Removendo pacote
+      apt:
+        name: dnsmasq-base
+        state: absent
+        purge: yes
+
+    - name: Network - identificacao das interfaces
+      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
+      register: interface
+
+    - name: Network - configuracao Manual
+      lineinfile:
+        dest: /etc/network/interfaces
+        line: "{{ item.line }}"
+      with_items:
+        - { line: '' }
+        - { line: 'auto {{ interface.stdout }}' }
+        - { line: 'iface {{ interface.stdout }} inet static' }
+        - { line: 'address {{ ad_ip }} ' }
+        - { line: 'netmask {{ ad_mask }} ' }
+        - { line: 'gateway {{ ad_gw }} ' }
+
+    - name: Network - Removendo configurações antigas
+      file: path=/etc//{{ item }} state=absent recurse=no
+      with_items:
+        - "resolv.conf"
+        - "hosts"
+
+    - name: Criando /etc/hosts
+      lineinfile:
+        dest: /etc/hosts
+        create: yes
+        regexp: '.*'
+        #line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+        line: "127.0.0.1\tlocalhost\n{{ ad_ip }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+        state: present
+
+    - name: resolv.conf - Criação do arquivo
+      lineinfile:
+        dest: /etc/resolv.conf
+        create: yes
+        regexp: '.*'
+        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
+        state: present
 
 
 
@@ -65,9 +65,6 @@
 
     - name: PPA - Grub Customizer
       apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
-
-    - name: PPA - Notepadqq
-      apt_repository: repo="ppa:notepadqq-team/notepadqq" state=present
 
     - name: PPA - UNetbooting
       apt_repository: repo="ppa:gezakovacs/ppa" state=present
@@ -94,6 +91,7 @@
         - filezilla
         - gawk
         - gksu
+        - gparted
         - gpm
         - grub-customizer
         - htop
@@ -106,7 +104,6 @@
         - nautilus-image-converter
         - nautilus-image-manipulator
         - nautilus-wipe
-        - notepadqq
         - ntopng
         - ntpdate
         - openssh-server
@@ -166,31 +163,6 @@
     - name: Oracle - Install Java 8
       apt: name=oracle-java8-installer force=yes
 
-
-#-----------------------
-# CHROME
-#-----------------------
-#    - name: Google Chrome - Download
-#      get_url:
-#        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#        dest: /usr/local
-#
-#    - name: Google Chrome - Install
-#      apt:
-#        deb: /usr/local/google-chrome-stable_current_amd64.deb
-
-
-#-----------------------
-# Webmin
-#-----------------------
-#    - name: Webmin - Download
-#      get_url:
-#        url: http://prdownloads.sourceforge.net/webadmin/webmin_1.840_all.deb
-#        dest: /usr/local
-#
-#    - name: Webmin - Install
-#      apt:
-#        deb: /usr/local/webmin_1.840_all.deb
 
 
 #-----------------------
