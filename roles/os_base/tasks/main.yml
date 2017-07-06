@@ -90,7 +90,6 @@
         - expect
         - fdupes
         - filezilla
-        - fwbuilder
         - gawk
         - gksu
         - gparted
