@@ -16,7 +16,7 @@
         - "smb.conf"
 
 ############# SAMBA STANDALONE
-   - name: Samba - Copia de arquivos de configuração
+    - name: Samba - Copia de arquivos de configuração
       copy: src={{ item.src }} dest={{ item.dest }} owner={{ item.owner }} mode={{ item.mode }} force=yes
       with_items:
         - { src: '~/ansible-servidor/Calex/smb.conf', dest: '/etc/samba/', owner: 'root', group: 'root', mode: '644' }
