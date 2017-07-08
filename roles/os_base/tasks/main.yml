@@ -1,60 +1,62 @@
 #-----------------------
 # Network
 #-----------------------
-    - name: DNSMASQ - Parando o servico
-      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
 
-    - name: dnsmasq - Removendo pacote
-      apt:
-        name: dnsmasq
-        state: absent
-        purge: yes
-
-    - name: dnsmasq-base - Removendo pacote
-      apt:
-        name: dnsmasq-base
-        state: absent
-        purge: yes
-
-
-    - name: Network - identificacao das interfaces
-      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
-      register: interface
-
-    - name: Network - configuracao Manual
-      lineinfile:
-        dest: /etc/network/interfaces
-        line: "{{ item.line }}"
-      with_items:
-        - { line: '' }
-        - { line: 'auto {{ interface.stdout }}' }
-        - { line: 'iface {{ interface.stdout }} inet static' }
-        - { line: 'address {{ ad_ip }} ' }
-        - { line: 'netmask {{ ad_mask }} ' }
-        - { line: 'gateway {{ ad_gw }} ' }
-
-    - name: Network - Removendo configurações antigas
-      file: path=/etc//{{ item }} state=absent recurse=no
-      with_items:
-        - "resolv.conf"
-        - "hosts"
-
-    - name: Criando /etc/hosts
-      lineinfile:
-        dest: /etc/hosts
-        create: yes
-        regexp: '.*'
-        #line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
-        line: "127.0.0.1\tlocalhost\n{{ ad_ip }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
-        state: present
-
-    - name: resolv.conf - criando arquivo
-      lineinfile:
-        dest: /etc/resolv.conf
-        create: yes
-        regexp: '.*'
-        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
-        state: present
+########### AD SAMBA
+#    - name: DNSMASQ - Parando o servico
+#      shell: if pgrep dnsmasq; then pkill dnsmasq; fi
+#
+#    - name: dnsmasq - Removendo pacote
+#      apt:
+#        name: dnsmasq
+#        state: absent
+#        purge: yes
+#
+#    - name: dnsmasq-base - Removendo pacote
+#      apt:
+#        name: dnsmasq-base
+#        state: absent
+#        purge: yes
+#
+#
+#    - name: Network - identificacao das interfaces
+#      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
+#      register: interface
+#
+#    - name: Network - configuracao Manual
+#      lineinfile:
+#        dest: /etc/network/interfaces
+#        line: "{{ item.line }}"
+#      with_items:
+#        - { line: '' }
+#        - { line: 'auto {{ interface.stdout }}' }
+#        - { line: 'iface {{ interface.stdout }} inet static' }
+#        - { line: 'address {{ ad_ip }} ' }
+#        - { line: 'netmask {{ ad_mask }} ' }
+#        - { line: 'gateway {{ ad_gw }} ' }
+#
+#    - name: Network - Removendo configurações antigas
+#      file: path=/etc//{{ item }} state=absent recurse=no
+#      with_items:
+#        - "resolv.conf"
+#        - "hosts"
+#
+#    - name: Criando /etc/hosts
+#      lineinfile:
+#        dest: /etc/hosts
+#        create: yes
+#        regexp: '.*'
+#        #line: "127.0.0.1\tlocalhost\n{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+#        line: "127.0.0.1\tlocalhost\n{{ ad_ip }}\t{{ ansible_hostname }}.{{ realm|lower }}\t{{ ansible_hostname }}\n"
+#        state: present
+#
+#    - name: resolv.conf - criando arquivo
+#      lineinfile:
+#        dest: /etc/resolv.conf
+#        create: yes
+#        regexp: '.*'
+#        line: "domain {{ realm|lower }}\nnameserver 127.0.0.1\nnameserver 8.8.8.8"
+#        state: present
 
 
 
@@ -168,14 +170,14 @@
 #-----------------------
 # TeamViewer
 #-----------------------
-#    - name: TeamViewer - Download
-#      get_url:
-#        url: https://download.teamviewer.com/download/teamviewer_i386.deb
-#        dest: /usr/local/teamviewer_i386.deb
-#
-#    - name: TeamViewer - Install
-#      apt:
-#        deb: /usr/local/teamviewer_i386.deb
+    - name: TeamViewer - Download
+      get_url:
+        url: https://download.teamviewer.com/download/teamviewer_i386.deb
+        dest: /usr/local/teamviewer_i386.deb
+
+    - name: TeamViewer - Install
+      apt:
+        deb: /usr/local/teamviewer_i386.deb
 
 
 #-----------------------

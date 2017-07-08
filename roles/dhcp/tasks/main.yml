@@ -16,21 +16,21 @@
       with_items:
         - { src: '~/ansible-servidor/Calex/dhcpd.conf', dest: '/etc/dhcp/', owner: 'root', group: 'root', mode: '644' }
 
-    - name: Network - identificacao das interfaces
-      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
-      register: interface
-
-    - name: DHCP Server - configuracao da Interface
-      lineinfile:
-        dest: /etc/default/isc-dhcp-server
-        regexp: '^INTERFACES'
-        line: 'INTERFACES="{{ interface.stdout }}"'
-        state: present
-
-    - name: DHCP Server - Iniciando serviços
-      service: name={{ item.name }} state={{ item.state }}
-      with_items:
-        - { name: 'isc-dhcp-server', state: 'started'}
+#    - name: Network - identificacao das interfaces
+#      shell: ip link show | grep mode | sed 's/://g' | awk '{print $2}' | grep -m 1 -v lo
+#      register: interface
+#
+#    - name: DHCP Server - configuracao da Interface
+#      lineinfile:
+#        dest: /etc/default/isc-dhcp-server
+#        regexp: '^INTERFACES'
+#        line: 'INTERFACES="{{ interface.stdout }}"'
+#        state: present
+#
+#    - name: DHCP Server - Iniciando serviços
+#      service: name={{ item.name }} state={{ item.state }}
+#      with_items:
+#        - { name: 'isc-dhcp-server', state: 'started'}
 
 
 
