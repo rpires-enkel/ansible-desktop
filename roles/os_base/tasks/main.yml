@@ -86,6 +86,7 @@
       with_items:
         - aptitude
         - axel
+        - brasero
         - bzr
         - deja-dup
         - dos2unix
