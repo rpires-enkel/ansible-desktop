@@ -94,6 +94,7 @@
         - fdupes
         - filezilla
         - gawk
+        - gnome-disk-utility
         - gksu
         - gparted
         - gpm
