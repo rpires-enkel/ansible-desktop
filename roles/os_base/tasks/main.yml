@@ -114,6 +114,7 @@
         - ntpdate
         - openssh-server
         - openvpn
+        - pdfmod
         - plank
         - python-pexpect
         - python-pip
