@@ -1,0 +1,120 @@
+#-----------------------
+# PPA
+#-----------------------
+    - name: PPA - Oracle
+      apt_repository: repo="ppa:webupd8team/java" state=present
+
+    - name: PPA - Grub Customizer
+      apt_repository: repo="ppa:danielrichter2007/grub-customizer" state=present
+
+    - name: PPA - UNetbooting
+      apt_repository: repo="ppa:gezakovacs/ppa" state=present
+
+    - name: Update repositories cache - apt-get update
+      apt:
+        update_cache: yes
+        cache_valid_time: 7200
+
+
+#-----------------------
+# FERRAMENTAS UTEIS
+#-----------------------
+    - name: Install common packages
+      apt: pkg={{item}} state=latest
+      with_items:
+        - aptitude
+        - axel
+        - brasero
+        - bzr
+        - deja-dup
+        - dos2unix
+        - expect
+        - fdupes
+        - filezilla
+        - gawk
+        - gnome-disk-utility
+        - gksu
+        - gparted
+        - gpm
+        - grub-customizer
+        - gtkpod
+        - htop
+        - httping
+        - iftop
+        - iotop
+        - nautilus-compare
+        - nautilus-image-converter
+        - nautilus-image-manipulator
+        - nautilus-wipe
+        - ntpdate
+        - openssh-server
+        - openvpn
+        - pdfmod
+        - plank
+        - python-pexpect
+        - python-pip
+        - synaptic
+        - tmux
+        - trash-cli
+        - unetbootin
+        - vim
+        - whois
+########## AD / SAMBA
+        - samba
+        - smbclient
+        - ldap-utils
+
+
+#-----------------------
+# VIM
+#-----------------------
+    - name: VIM - Cria arquivo de conf
+      file: path=~/.vimrc state=touch
+
+    - name: VIM - Configuracao
+      lineinfile: dest=~/.vimrc
+        line='colo delek'
+        state=present
+
+#-----------------------
+# SSH Server
+#-----------------------
+    - name: SSH Server - Edit sshd_config
+      lineinfile: dest=/etc/ssh/sshd_config
+        regexp='^PermitRootLogin'
+        line='PermitRootLogin yes'
+        state=present
+
+    - name: SSH Server - Restart service
+      service:
+        name: sshd
+        state: restarted
+
+#-----------------------
+# Oracle
+#-----------------------
+    - name: Oracle - Agree to Oracle license
+      debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+
+    - name: Oracle - Install Java 8
+      apt: name=oracle-java8-installer force=yes
+
+
+#-----------------------
+# CHROME
+#-----------------------
+    - name: Google Chrome - Download
+      get_url:
+        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        dest: /usr/local
+
+    - name: Google Chrome - Install
+      apt:
+        deb: /usr/local/google-chrome-stable_current_amd64.deb
+
+
+#-----------------------
+# APT UPGRADE
+#-----------------------
+    - name: Upgrade Packages - apt-get upgrade
+      apt: upgrade=yes

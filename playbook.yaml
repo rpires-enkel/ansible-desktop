@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  remote_user: root
+  gather_facts: True
+
+#  vars_prompt:
+#    - name: "dominio"
+#      prompt: "Nome do Domínio (Ex. nome_empresa)"
+#      private: no
+#      default: calex
+#    - name: "realm"
+#      prompt: "Nome do Realm (Ex. nome_empresa.local.br)"
+#      private: no
+#      default: calex.local.br
+#    - name: "ad_passwd"
+#      prompt: "Senha para o usuario Administrator (Tem que ter minusculas, maiusculas e numeros)"
+#      private: yes
+#    - name: "ad_ip"
+#      prompt: "IP para o servidor AD"
+#      private: no
+#      default: 192.168.0.254
+#    - name: "ad_mask"
+#      prompt: "MASK"
+#      private: no
+#      default: 255.255.255.0
+#    - name: "ad_gw"
+#      prompt: "Gateway"
+#      private: no
+#      default: 192.168.0.1
+
+######## DHCP Server ###########
+#    - name: "dhcp_range_ini"
+#      prompt: "DHCP - Range (ip inicial)"
+#      private: no
+#      default: 192.168.0.50
+#    - name: "dhcp_range_end"
+#      prompt: "DHCP - Range (ip final)"
+#      private: no
+#      default: 192.168.0.250
+
+
+  roles:
+    - desktop
+#    - os_base
+#    - ad_samba
+#    - dhcp
+#    - proxy
+#    - firewall
+...
