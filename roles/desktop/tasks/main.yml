@@ -26,6 +26,7 @@
         - axel
         - brasero
         - bzr
+        - dbus
         - deja-dup
         - dos2unix
         - expect
@@ -42,11 +43,17 @@
         - httping
         - iftop
         - iotop
+        - libcurl3
+        - libdbus-1-3
+        - libnss3
+        - libnss3-tools
+        - libssl1.0.0
         - nautilus-compare
         - nautilus-image-converter
         - nautilus-image-manipulator
         - nautilus-wipe
         - ntpdate
+        - openssl
         - openssh-server
         - openvpn
         - pdfmod
