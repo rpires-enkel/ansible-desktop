@@ -32,6 +32,7 @@
         - expect
         - fdupes
         - filezilla
+        - foremost
         - gawk
         - gnome-disk-utility
         - gksu
