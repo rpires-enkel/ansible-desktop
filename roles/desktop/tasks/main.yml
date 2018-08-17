@@ -64,6 +64,7 @@
         - plank
         - python-pexpect
         - python-pip
+        - snap
         - synaptic
         - tmux
         - trash-cli
@@ -124,6 +125,19 @@
       apt:
         deb: /usr/local/google-chrome-stable_current_amd64.deb
 
+
+#-----------------------
+# Atom
+#-----------------------
+    - name: Atom Editor - Download
+      get_url:
+        url: https://atom.io/download/deb
+        dest: /usr/local
+
+    - name: Atom Editor - Install
+      apt:
+        deb: /usr/local/atom-amd64.deb
+        
 
 #-----------------------
 # APT UPGRADE
