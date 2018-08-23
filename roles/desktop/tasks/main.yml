@@ -26,6 +26,7 @@
         - axel
         - brasero
         - bzr
+        - curl
         - dbus
         - deja-dup
         - dos2unix
