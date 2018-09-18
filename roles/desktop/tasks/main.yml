@@ -36,7 +36,7 @@
         - foremost
         - gawk
         - gnome-disk-utility
-        - gksu
+#        - gksu REMOVIDO DO 18.04 EM DIANTE
         - gparted
         - gpm
         - grub-customizer
